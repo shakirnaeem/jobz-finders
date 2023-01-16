@@ -300,6 +300,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+**/dist/
 /Src/FCR/FCR.Web/CarRentalPortal/src/app/components/blog-posts/blog-posts.component.html
 /Src/FCR/FCR.Web/CarRentalPortal/src/app/components/car-booking/car-detail/car-detail.component.css
 /Src/FCR/FCR.Web/CarRentalPortal/src/app/components/car-booking/car-booking.component.html
