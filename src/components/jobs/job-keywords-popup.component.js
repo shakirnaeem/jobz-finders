@@ -16,7 +16,7 @@ const JobKeywordPopup = (props) => {
     const dispatch = useDispatch()
     const keywordsData = useSelector(state => state.getAllKeywords)
 
-    const selectedKeywords = [];
+    let selectedKeywords = [];
 
     useEffect(() => {
         dispatch(getKeywordsTreeAction())

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import AdminLayout from "@/src/screens/layout/admin-layout";
+import AdminLayout from "@/src/screens/shared/layout/admin-layout";
 import { getAllJobsAction, deleteJobAction } from "@/src/actions/job-actions";
 import router, { useRouter } from "next/router";
 import Link from "next/link";
