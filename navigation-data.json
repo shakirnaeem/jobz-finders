@@ -1,0 +1,234 @@
+{
+    "navigations": [
+        {
+            "category": "Industry Wise Jobs",
+            "navs": [
+                {
+                    "key": "industry_government",
+                    "title": "Government Jobs",
+                    "search": "Government"
+                },
+                {
+                    "key": "industry_education",
+                    "title": "Education Jobs",
+                    "search": "Education"
+                },
+                {
+                    "key": "industry_health",
+                    "title": "Health Jobs",
+                    "search": "Health"
+                },
+                {
+                    "key": "industry_bank",
+                    "title": "Bank Jobs",
+                    "search": "Bank"
+                },
+                {
+                    "key": "industry_it",
+                    "title": "IT Jobs",
+                    "search": "IT"
+                }
+            ]
+        },
+        {
+            "category": "Location Wise Jobs",
+            "navs": [
+                {
+                    "key": "location_country_pakistan",
+                    "title": "Jobs In Pakistan",
+                    "search": "Pakistan"
+                },
+                {
+                    "key": "location_province_punjab",
+                    "title": "Jobs In Punjab",
+                    "search": "Punjab"
+                },
+                {
+                    "key": "location_province_sindh",
+                    "title": "Jobs In Sindh",
+                    "search": "Sindh"
+                },
+                {
+                    "key": "location_province_kpk",
+                    "title": "Jobs In Khyber Pakhtunkhwa (KPK)",
+                    "search": "Khyber Pakhtunkhwa"
+                },
+                {
+                    "key": "location_province_balochistan",
+                    "title": "Jobs In Balochistan",
+                    "search": "Balochistan"
+                },
+                {
+                    "key": "location_city_islamabad",
+                    "title": "Jobs In Islamabad",
+                    "search": "Islamabad"
+                },
+                {
+                    "key": "location_city_rawalpindi",
+                    "title": "Jobs In Rawalpindi",
+                    "search": "Rawalpindi"
+                },
+                {
+                    "key": "location_city_karachi",
+                    "title": "Jobs In Karachi",
+                    "search": "Karachi"
+                },
+                {
+                    "key": "location_city_lahore",
+                    "title": "Jobs In Lahore",
+                    "search": "Lahore"
+                },
+                {
+                    "key": "location_city_peshawar",
+                    "title": "Jobs In Peshawar",
+                    "search": "Peshawar"
+                },
+                {
+                    "key": "location_city_quetta",
+                    "title": "Jobs In Quetta",
+                    "search": "Quetta"
+                },
+                {
+                    "key": "location_city_faisalabad",
+                    "title": "Jobs In Faisalabad",
+                    "search": "Faisalabad"
+                },
+                {
+                    "key": "location_city_hyderabad",
+                    "title": "Jobs In Hyderabad",
+                    "search": "Hyderabad"
+                },
+                {
+                    "key": "location_city_gujranwala",
+                    "title": "Jobs In Gujranwala",
+                    "search": "Gujranwala"
+                },
+                {
+                    "key": "location_city_sialkot",
+                    "title": "Jobs In Sialkot",
+                    "search": "Sialkot"
+                }
+            ]
+        },
+        {
+            "category": "Organization Wise Jobs",
+            "navs": [
+                {
+                    "key": "organization_Pakistan_army",
+                    "title": "Pakistan Army Jobs",
+                    "search": "Pakistan Army"
+                },
+                {
+                    "key": "organization_pakistan_navy",
+                    "title": "Pakistan Navy Jobs",
+                    "search": "Pakistan Navy"
+                },
+                {
+                    "key": "organization_pakistan_air_force",
+                    "title": "Pakistan Air Force Jobs",
+                    "search": "Pakistan Air Force"
+                },
+                {
+                    "key": "organization_fia",
+                    "title": "FIA Jobs",
+                    "search": "FIA"
+                },
+                {
+                    "key": "organization_police",
+                    "title": "Police Jobs",
+                    "search": "Police"
+                },
+                {
+                    "key": "organization_nab",
+                    "title": "NAB Jobs",
+                    "search": "NAB"
+                },
+                {
+                    "key": "organization_asf",
+                    "title": "ASF Jobs",
+                    "search": "ASF"
+                },
+                {
+                    "key": "organization_spd",
+                    "title": "SPD Jobs",
+                    "search": "SPD"
+                },
+                {
+                    "key": "organization_paec",
+                    "title": "PAEC Jobs",
+                    "search": "PAEC"
+                },
+                {
+                    "key": "organization_nescom",
+                    "title": "NESCOM Jobs",
+                    "search": "NESCOM"
+                },
+                {
+                    "key": "organization_ndc",
+                    "title": "NDC Jobs",
+                    "search": "NDC"
+                },
+                {
+                    "key": "organization_suparco",
+                    "title": "SUPARCO Jobs",
+                    "search": "SUPARCO"
+                },
+                {
+                    "key": "organization_krl",
+                    "title": "KRL Jobs",
+                    "search": "KRL"
+                },
+                {
+                    "key": "organization_pnra",
+                    "title": "PNRA Jobs",
+                    "search": "PNRA"
+                },
+                {
+                    "key": "organization_fpsc",
+                    "title": "FPSC Jobs",
+                    "search": "FPSC"
+                },
+                {
+                    "key": "organization_ppsc",
+                    "title": "PPSC Jobs",
+                    "search": "PPSC"
+                },
+                {
+                    "key": "organization_spsc",
+                    "title": "SPSC Jobs",
+                    "search": "SPSC"
+                },
+                {
+                    "key": "organization_kppsc",
+                    "title": "KPPSC Jobs",
+                    "search": "KPPSC"
+                },
+                {
+                    "key": "organization_bpsc",
+                    "title": "BPSC Jobs",
+                    "search": "BPSC"
+                },
+                {
+                    "key": "organization_ajkpsc",
+                    "title": "AJKPSC Jobs",
+                    "search": "AJKPSC"
+                },
+                {
+                    "key": "organization_pia",
+                    "title": "PIA Jobs",
+                    "search": "PIA"
+                },
+                {
+                    "key": "organization_fbr",
+                    "title": "FBR Jobs",
+                    "search": "FBR"
+                },
+                {
+                    "key": "organization_ssgc",
+                    "title": "SSGC Jobs",
+                    "search": "SSGC"
+                }
+            ]
+        }
+    ]
+}
