@@ -30,7 +30,7 @@ class ApiService {
             if (httpMethod != 'DELETE') {
                 options['body'] = JSON.stringify(data)
             }
-            const api_url = `${API_URI}${url}`
+            const api_url = `${process.env.API_URI}${url}`
             const res = await fetch(api_url, options)
             return await res.json()
         } catch (error) {
@@ -45,7 +45,7 @@ class ApiService {
                 method: httpMethod
             };
             
-            const api_url = `${API_URI}${url}`
+            const api_url = `${process.env.API_URI}${url}`
             const res = await fetch(api_url, options)
             return await res.json()
         } catch (error) {
@@ -55,7 +55,7 @@ class ApiService {
 
     static async sendQueryRequest(url) {
         try {
-            const api_url = `${API_URI}${url}`
+            const api_url = `${process.env.API_URI}${url}`
             const res = await fetch(api_url,
                 {
                     headers: this.getHeaders(),
@@ -82,7 +82,7 @@ class ApiService {
 
     static async get(url) {
         try {
-            const api_url = `${API_URI}${url}`
+            const api_url = `${process.env.API_URI}${url}`
             const res = await fetch(api_url,
                 {
                     headers: this.getHeaders(),
