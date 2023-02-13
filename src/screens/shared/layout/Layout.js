@@ -7,6 +7,6 @@ export default function Layout({ children, ...pageProps }) {
     return <>
         <TopNav toggleSideNav={toggleSideNav} setToggleSideNav={setToggleSideNav}></TopNav>
         <SideNav toggleSideNav={toggleSideNav} setToggleSideNav={setToggleSideNav}></SideNav>
-        {children}
+            {children}
     </>
 }

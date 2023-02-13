@@ -16,7 +16,7 @@
     "@google-cloud/storage": "^6.9.2",
     "@next/font": "13.1.6",
     "@reduxjs/toolkit": "^1.9.2",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^4.0.0",
     "bson-objectid": "^2.0.4",
     "dotenv": "^16.0.3",
     "eslint": "8.34.0",
