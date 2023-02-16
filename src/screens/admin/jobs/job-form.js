@@ -101,7 +101,6 @@ const JobForm = (props) => {
             dispatch(addJobAction(jobDetails));
         }
         else {
-            debugger
             jobDetails._id = props.id;
             if (jobImageModel.imageFile != null && jobImageModel.imageFile != '') {
                 jobImageModel.fileName = `${props.id}.${extension}`;

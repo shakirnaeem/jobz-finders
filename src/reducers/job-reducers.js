@@ -1,10 +1,10 @@
 import { GET_ALL_JOBS, JOB_COMMAND_RESPONSE, GET_JOB_DETAILS } from "@/src/constants/job-constants";
 import JobModel from "@/src/models/job-model";
 
-const getAllJobsReducer = (state = { data: [], success: false }, action) => {
+const getAllJobsReducer = (state = { data: [], success: false, count: 0 }, action) => {
     switch (action.type) {
         case GET_ALL_JOBS:
-            return { ...state, data: action.payload.data, success: action.payload.success };
+            return { ...state, data: action.payload.data, count: action.payload.count, success: action.payload.success };
         default:
             return state;
     }

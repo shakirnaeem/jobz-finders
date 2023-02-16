@@ -1,16 +1,43 @@
 import { useRouter } from 'next/router'
 import CommonService from '@/src/services/common-service'
 import Layout from '@/src/screens/shared/layout/Layout'
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import Paging from '@/src/components/paging'
+import { getAllJobsAction } from "@/src/actions/job-actions";
 
 export default function JobListing(props) {
     const router = useRouter()
+    const dispatch = useDispatch();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
+    const [totalItems, setTotalItems] = useState(0);
+
+    const response = useSelector(state => state.getAllJobs);
+
     function gotoDetails(id) {
         router.push(`/details/${id}`)
     }
 
+    useEffect(() => {
+        dispatch(getAllJobsAction(1, {keywords: {'$regex' : props.searchParam, '$options' : 'i'}}));
+    }, []);
+
+    useEffect(() => {
+        if (response.data instanceof Array) {
+            setTotalItems(response.count);
+        }
+    }, [response]);
+
+    const handlePageClick = (pageNo) => {
+        setCurrentPage(pageNo);
+        window.scrollTo(0,0)
+        dispatch(getAllJobsAction(pageNo, {keywords: {'$regex' : props.searchParam, '$options' : 'i'}}));
+    }
+
     const renderJobs = () => {
-        if (props.jobs instanceof Array) {
-            return props.jobs.map(function (item, i) {
+        if (response.data instanceof Array) {
+            return response.data.map(function (item, i) {
                 return <div key={i} className="col-md-12 mb-2">
                     <div className="border rounded p-3">
                         <h5>{item.title}</h5>
@@ -44,14 +71,19 @@ export default function JobListing(props) {
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">{props.title}</h4>
                 <div className="row m-0">
-                    {props.jobs.length > 0 && renderJobs()}
-                    { props.jobs.length == 0 &&
+                    {response.data.length > 0 && renderJobs()}
+                    {response.data.length == 0 &&
                         <div className="col-md-12 mb-2">
                             <div className="border rounded p-3">
                                 <h6 className="text-center">No jobs found.</h6>
                             </div>
                         </div>
                     }
+                </div>
+                <div className='row'>
+                    <div className='col-md-12 d-flex justify-content-center'>
+                        {response.data.length > 0 && <Paging onPageClick={handlePageClick} itemsPerPage={itemsPerPage} currentPage={currentPage} totalItems={totalItems} />}
+                    </div>
                 </div>
             </div>
         </Layout>

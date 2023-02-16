@@ -8,14 +8,15 @@ import { JOB_LIST } from "@/src/constants/response-type-constants";
 
 const ApiName = 'jobs';
 
-const getAllJobsAction = () => async (dispatch, getState) => {
+const getAllJobsAction = (pageNo = 1, queryModel = null) => async (dispatch, getState) => {
     var request = new RequestModel();
-    request.queryModel = {};
+    request.pageNo = pageNo;
+    request.queryModel = queryModel ? queryModel : {};
     request.responseType = JOB_LIST;
 
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
-
+    
     dispatch({
         type: GET_ALL_JOBS,
         payload: response
