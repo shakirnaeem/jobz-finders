@@ -15,7 +15,7 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const filePath = path.join(process.cwd(), 'navigation-data.json');
+  const filePath = path.join(process.cwd(), 'pages/navigation-data.json');
   const jsonData = await fsPromises.readFile(filePath);
   const objectData = JSON.parse(jsonData);
 
