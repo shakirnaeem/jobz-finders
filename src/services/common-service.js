@@ -49,6 +49,14 @@ export default class CommonService {
         return JSON.parse(JSON.stringify(result));
     }
 
+    static applyContains(queryModel) {
+        Object.keys(queryModel).forEach(function(key) {
+            queryModel[key] = { '$regex' : queryModel[key], '$options' : 'i' };
+        });
+
+        return queryModel;
+    }
+
     static encodeParams(string) {
         string = 'bbvgjj6' + string + 'bbvgjj677*hhbvYYYHNNMB';
         let number = '0';

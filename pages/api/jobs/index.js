@@ -32,14 +32,16 @@ const GetList = async (req, res) => {
         var responseModel = ResponseTypeService.getResponseTypeModel(req.query['responseType']);
         var requestModel = CommonService.queryStringToJSON(req.url);
         const { db } = await connectToDatabase();
+        
+        const queryModel = CommonService.applyContains(requestModel.queryModel);
 
         const count = await db
         .collection('jobs')
-        .find(requestModel.queryModel).count();
+        .find(queryModel).count();
 
         const jobs = await db
             .collection('jobs')
-            .find(requestModel.queryModel)
+            .find(queryModel)
             .project(responseModel)
             .sort({ adDate: -1 })
             .skip(parseInt(requestModel.pageSize) * (parseInt(requestModel.pageNo) - 1))

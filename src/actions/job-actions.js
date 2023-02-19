@@ -13,7 +13,7 @@ const getAllJobsAction = (pageNo = 1, queryModel = null) => async (dispatch, get
     request.pageNo = pageNo;
     request.queryModel = queryModel ? queryModel : {};
     request.responseType = JOB_LIST;
-
+    
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
     

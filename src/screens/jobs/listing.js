@@ -20,7 +20,7 @@ export default function JobListing(props) {
     }
 
     useEffect(() => {
-        dispatch(getAllJobsAction(1, {keywords: {'$regex' : props.searchParam, '$options' : 'i'}}));
+        dispatch(getAllJobsAction(1, { keywords: props.searchParam}));
     }, []);
 
     useEffect(() => {

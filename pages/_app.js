@@ -38,6 +38,7 @@ function MyApp({ Component, pageProps }) {
       '/',
       '/account/login',
       '/details/[id]',
+      '/job_type/[key]',
     ];
     if (navigationData && navigationData.navigations.length > 0) {
       const navLength = navigationData.navigations.length;
