@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import store from '@/src/store';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import navigationData from '@/pages/navigation-data.json';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -33,24 +34,21 @@ function MyApp({ Component, pageProps }) {
 
   function authCheck(url) {
     // redirect to login page if accessing a private page and not logged in 
-    const publicPaths = [
+    let publicPaths = [
       '/',
       '/account/login',
       '/details/[id]',
-      '/industry/bank',
-      '/industry/education',
-      '/industry/government',
-      '/industry/health',
-      '/industry/it',
-      '/location/country/pakistan',
-      '/location/city/islamabad',
-      '/location/city/karachi',
-      '/location/city/lahore',
-      '/location/city/multan',
-      '/location/city/peshawar',
     ];
+    if (navigationData && navigationData.navigations.length > 0) {
+      const navLength = navigationData.navigations.length;
+      for (var i = 0; i < navLength; i++) {
+        var navCategory = navigationData.navigations[i];
+        publicPaths = publicPaths.concat(navCategory.navs.map(x => `/job_type/${x.key}`));
+      }
+    }
+    
     let path = url.split('?')[0];
-    if(url.indexOf('/details/') > -1)
+    if (url.indexOf('/details/') > -1)
       path = `/details/[id]`;
 
     if (!localStorage.getItem('_token') && !publicPaths.includes(path)) {

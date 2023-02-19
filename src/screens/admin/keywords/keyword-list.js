@@ -41,7 +41,7 @@ const KeywordList = () => {
                                                 <td>{item.keyword}</td>
                                                 <td>{item.parent}</td>
                                                 <td>
-                                                    <Link href={`/private/control-panel/keywords/form/${item._id}`}><a className="text-warning">Edit</a></Link>&nbsp;|&nbsp;
+                                                    <Link className="text-warning" href={`/private/control-panel/keywords/form/${item._id}`}>Edit</Link>&nbsp;|&nbsp;
                                                     <a onClick={x => deleteKeyword(item)} className="text-danger cursor-pointer">Delete</a>
                                                 </td>
                                             </tr>

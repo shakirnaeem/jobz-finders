@@ -8,8 +8,8 @@ export default function AdminSideNav(props) {
         <i className="closenav fa fa-close d-lg-none d-md-none"></i>
         <div className="side-nav-head first mt-4">Menu</div>
         <ul className="list-group">
-            <li className="list-group-item"><Link href="/private/control-panel/jobs"><a className="text-white">Jobs <FontAwesomeIcon icon={faAngleRight} className="float-right" /></a></Link></li>
-            <li className="list-group-item"><Link href="/private/control-panel/keywords"><a className="text-white">Keywords Bank <FontAwesomeIcon icon={faAngleRight} className="float-right" /></a></Link></li>
+            <li className="list-group-item"><Link className="text-white" href="/private/control-panel/jobs">Jobs <FontAwesomeIcon icon={faAngleRight} className="float-right" /></Link></li>
+            <li className="list-group-item"><Link className="text-white" href="/private/control-panel/keywords">Keywords Bank <FontAwesomeIcon icon={faAngleRight} className="float-right" /></Link></li>
         </ul>
     </div>
 }

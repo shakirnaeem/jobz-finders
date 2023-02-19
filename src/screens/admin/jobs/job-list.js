@@ -67,7 +67,7 @@ const JobList = () => {
                                                 <td>{item.title}</td>
                                                 <td>{item.active ? 'active' : 'Inactive'}</td>
                                                 <td>
-                                                    <Link href={`/private/control-panel/jobs/form/${item._id}`}><a className="text-warning">Edit</a></Link>&nbsp;|&nbsp;
+                                                    <Link className="text-warning" href={`/private/control-panel/jobs/form/${item._id}`}>Edit</Link>&nbsp;|&nbsp;
                                                     <a onClick={x => { setSelectedJob(item); setModal(true) }} className="text-danger cursor-pointer">Delete</a>
                                                 </td>
                                             </tr>

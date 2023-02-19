@@ -9,7 +9,7 @@ export default function Home(props) {
   var title = "Jobs In Pakistan";
   const router = useRouter()
   const { key } = router.query;
-  
+  debugger
   var selectedNav = null;
   var searchParam = 'pakistan';
   if (navigationData && navigationData.navigations.length > 0 && key) {

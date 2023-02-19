@@ -22,7 +22,7 @@ const Paging = (props) => {
                 paginateData.items.map(function (item, i) {
                     if (item == currentPage)
                         return <li key={item} className="page-item active"><a className="page-link" href='javascript:void(0)'>{item}</a></li>
-                    else if (item === '...')
+                    else if (item === '…')
                         return <li key={item} className="page-item disabled"><a className="page-link" href='javascript:void(0)'>{item}</a></li>
                     else
                         return <li key={item} className="page-item"><a className="page-link" onClick={() => onPageClick(item)} href='javascript:void(0)'>{item}</a></li>

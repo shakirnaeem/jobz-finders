@@ -18,7 +18,7 @@ export default function SideNav(props) {
                     <ul id={`nav_item_${i}`} key={`nav_item_${i}`} className="list-group">
                         { item.navs && item.navs.length > 0 &&
                             item.navs.map(function (subItem, j) {
-                                return <li key={`nav_subitem_${i}_${j}`} className="list-group-item"><a className='text-white' href={`/job_type/${subItem.key}`}>{subItem.title} <FontAwesomeIcon icon={faAngleRight} className="float-right" /></a></li>
+                                return <li key={`nav_subitem_${i}_${j}`} className="list-group-item"><Link className='text-white' href={{ pathname: `/job_type/${subItem.key}`, query: { key: subItem.key } }}>{subItem.title} <FontAwesomeIcon icon={faAngleRight} className="float-right" /></Link></li>
                             })
                         }
                     </ul>
