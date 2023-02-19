@@ -33,7 +33,7 @@ const GetList = async (req, res) => {
         var requestModel = CommonService.queryStringToJSON(req.url);
         const { db } = await connectToDatabase();
         
-        const queryModel = CommonService.applyContains(requestModel.queryModel);
+        const queryModel = requestModel.queryModel ? CommonService.applyContains(requestModel.queryModel) : {};
 
         const count = await db
         .collection('jobs')

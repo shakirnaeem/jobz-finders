@@ -8,12 +8,16 @@ import CommonService from "@/src/services/common-service";
 import JobDeletePopup from "./job-delete-popup";
 import { ToastContainer, toast } from 'react-toastify'
 import { clearJobResponseAction } from "@/src/actions/job-actions";
+import Paging from "@/src/components/paging";
 
 const JobList = () => {
     const adSourceList = ['', 'Jang', 'The News', 'Dawn', 'Nawa-i-Waqt', 'Express', 'The Nation'];
     var route = useRouter();
     const [modal, setModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
+    const [totalItems, setTotalItems] = useState(0);
     const dispatch = useDispatch();
     const response = useSelector(state => state.getAllJobs);
     const handleCancel = () => { setModal(false) }
@@ -25,7 +29,7 @@ const JobList = () => {
         dispatch(deleteJobAction(selectedJob))
     }
     useEffect(() => {
-        dispatch(getAllJobsAction());
+        dispatch(getAllJobsAction(1));
     }, []);
     useEffect(() => {
         if (commandResponse.message != '') {
@@ -35,9 +39,22 @@ const JobList = () => {
                 toast.error(commandResponse.message);
 
             dispatch(clearJobResponseAction());
-            dispatch(getAllJobsAction());
+            dispatch(getAllJobsAction(1));
         }
     }, [commandResponse.message]);
+
+    useEffect(() => {
+        if (response.data instanceof Array) {
+            setTotalItems(response.count);
+        }
+    }, [response]);
+
+    const handlePageClick = (pageNo) => {
+        setCurrentPage(pageNo);
+        window.scrollTo(0,0)
+        dispatch(getAllJobsAction(pageNo));
+    }
+
     return (
         <AdminLayout>
             <JobDeletePopup isOpen={modal} handleCancel={handleCancel} handleOk={handleOk}></JobDeletePopup>
@@ -76,6 +93,11 @@ const JobList = () => {
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-md-12 d-flex justify-content-center'>
+                        {response.data.length > 0 && <Paging onPageClick={handlePageClick} itemsPerPage={itemsPerPage} currentPage={currentPage} totalItems={totalItems} />}
                     </div>
                 </div>
             </div>
