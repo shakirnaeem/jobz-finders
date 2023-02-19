@@ -32,7 +32,7 @@ export default function JobListing(props) {
     const handlePageClick = (pageNo) => {
         setCurrentPage(pageNo);
         window.scrollTo(0,0)
-        dispatch(getAllJobsAction(pageNo, {keywords: {'$regex' : props.searchParam, '$options' : 'i'}}));
+        dispatch(getAllJobsAction(pageNo, { keywords: props.searchParam}));
     }
 
     const renderJobs = () => {
