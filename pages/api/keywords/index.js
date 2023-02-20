@@ -21,18 +21,24 @@ const GetList = async (req, res) => {
         var responseModel = ResponseTypeService.getResponseTypeModel(req.query['responseType']);
         var requestModel = CommonService.queryStringToJSON(req.url);
         const { db } = await connectToDatabase();
+
+        const count = await db
+            .collection('jobKeywords')
+            .find(requestModel.queryModel).count();
+
         const jobKeywords = await db
             .collection('jobKeywords')
             .find(requestModel.queryModel)
             .project(responseModel)
-            //.sort({ metacritic: -1 })
-            //.limit(1)
+            .sort({ adDate: -1 })
+            .skip(parseInt(requestModel.pageSize) == 0 ? 0 : parseInt(requestModel.pageSize) * (parseInt(requestModel.pageNo) - 1))
+            .limit(parseInt(requestModel.pageSize) == 0 ? count : parseInt(requestModel.pageSize))
             .toArray();
 
-        res.status(200).json({ success: true, message: '', data: jobKeywords });
+        res.status(200).json({ success: true, message: '', data: jobKeywords, count: count });
     } catch (error) {
         console.log(`api response error: ` + error)
-        res.status(500).json({ success: false, message: 'Something went wrong. Please try again later.', data: [] })
+        res.status(500).json({ success: false, message: 'Something went wrong. Please try again later.', data: [], count: 0 })
     }
 }
 
@@ -57,7 +63,7 @@ const Update = async (req, res) => {
         const { db } = await connectToDatabase();
         await db.collection("jobKeywords").updateOne(
             { _id: req.body._id },
-            { $set: req.body}
+            { $set: req.body }
         );
         successResponse = true;
     } catch (error) {

@@ -10,25 +10,31 @@ import ObjectID from "bson-objectid";
 const KeywordForm = (props) => {
     var router = useRouter();
     const dispatch = useDispatch();
-
     const firstUpdate = useRef(true);
     const [keyword, setKeyword] = useState('');
     const [parent, setParent] = useState('');
     const [keywordDetails, setKeywordDetails] = useState(new JobKeywordModel());
-    
-    const response = useSelector(state => state.keywordCommandResponse);
 
-    useEffect(async () => {
+    const response = useSelector(state => state.keywordCommandResponse);
+    const detailResponse = useSelector(state => state.getKeywordDetail);
+
+    useEffect(() => {
+        if (detailResponse.data && Object.keys(detailResponse.data).length > 0) {
+            const keywordDtl = detailResponse.data; 
+            setKeywordDetails(keywordDtl);
+            setKeyword(keywordDtl.keyword || '');
+            setParent(keywordDtl.parent);
+        }
+    }, [detailResponse]);
+
+    useEffect(() => {
         if (firstUpdate.current) {
             dispatch(clearKeywordResponseAction());
             dispatch(getParentKeywordsAction());
             firstUpdate.current = false;
         }
         if (props.id) {
-            var result = await getKeywordDetailsAction(props.id)
-            setKeywordDetails(result)
-            setKeyword(result.keyword || '')
-            setParent(result.parent)
+            dispatch(getKeywordDetailsAction(props.id));
         }
     }, [props])
 

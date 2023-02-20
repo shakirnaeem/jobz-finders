@@ -20,7 +20,10 @@ export default function JobListing(props) {
     }
 
     useEffect(() => {
-        dispatch(getAllJobsAction(1, { keywords: props.searchParam}));
+        if (props.searchParam)
+            dispatch(getAllJobsAction(1, { keywords: props.searchParam }));
+        else
+            dispatch(getAllJobsAction(1));
     }, []);
 
     useEffect(() => {
@@ -31,8 +34,11 @@ export default function JobListing(props) {
 
     const handlePageClick = (pageNo) => {
         setCurrentPage(pageNo);
-        window.scrollTo(0,0)
-        dispatch(getAllJobsAction(pageNo, { keywords: props.searchParam}));
+        window.scrollTo(0, 0)
+        if (props.searchParam)
+            dispatch(getAllJobsAction(pageNo, { keywords: props.searchParam }));
+        else
+            dispatch(getAllJobsAction(pageNo));
     }
 
     const renderJobs = () => {

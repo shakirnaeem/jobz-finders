@@ -4,9 +4,13 @@ import AdminLayout from "@/src/screens/shared/layout/admin-layout";
 import { getAllKeywordsAction, deleteKeywordAction } from "@/src/actions/keyword-actions";
 import router, { useRouter } from "next/router";
 import Link from "next/link";
+import Paging from "@/src/components/paging";
 
 const KeywordList = () => {
     var route = useRouter();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
+    const [totalItems, setTotalItems] = useState(0);
     const dispatch = useDispatch();
     const response = useSelector(state => state.getAllKeywords);
     const deleteKeyword = (item) => {
@@ -18,6 +22,19 @@ const KeywordList = () => {
     useEffect(() => {
         dispatch(getAllKeywordsAction());
     }, []);
+
+    useEffect(() => {
+        if (response.data instanceof Array) {
+            setTotalItems(response.count);
+        }
+    }, [response]);
+
+    const handlePageClick = (pageNo) => {
+        setCurrentPage(pageNo);
+        window.scrollTo(0,0)
+        dispatch(getAllKeywordsAction(pageNo));
+    }
+
     return (
         <AdminLayout>
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
@@ -50,6 +67,11 @@ const KeywordList = () => {
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-md-12 d-flex justify-content-center'>
+                        {response.data.length > 0 && <Paging onPageClick={handlePageClick} itemsPerPage={itemsPerPage} currentPage={currentPage} totalItems={totalItems} />}
                     </div>
                 </div>
             </div>

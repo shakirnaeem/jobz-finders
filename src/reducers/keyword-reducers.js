@@ -9,10 +9,19 @@ const getParentKeywordsReducer = (state = { parentKeywords: [] }, action) => {
             return state;
     }
 }
-const getAllKeywordsReducer = (state = { data: [], success: false }, action) => {
+const getAllKeywordsReducer = (state = { data: [], success: false, count:0 }, action) => {
     switch (action.type) {
         case GET_ALL_KEYWORDS:
-            return { ...state, data: action.payload.data, success: action.payload.success };
+            return { ...state, data: action.payload.data, count: action.payload.count, success: action.payload.success };
+        default:
+            return state;
+    }
+}
+
+const getKeywordDetailReducer = (state = { data: {} }, action) => {
+    switch (action.type) {
+        case GET_KEYWORD_DETAILS:
+            return { ...state, data: action.payload };
         default:
             return state;
     }
@@ -30,5 +39,6 @@ const keywordCommandResponseReducer = (state = { success: false, message: '' }, 
 export { 
     getParentKeywordsReducer, 
     getAllKeywordsReducer,
-    keywordCommandResponseReducer  
+    keywordCommandResponseReducer,
+    getKeywordDetailReducer
 }

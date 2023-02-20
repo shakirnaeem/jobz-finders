@@ -25,10 +25,10 @@ const getParentKeywordsAction = () => async (dispatch, getState) => {
     });
 }
 
-const getAllKeywordsAction = () => async (dispatch, getState) => {
-    var queryModel = new JobKeywordRequestModel();
+const getAllKeywordsAction = (pageNo = 1, queryModel = null) => async (dispatch, getState) => {
     var request = new RequestModel();
-    request.queryModel = {};
+    request.pageNo = pageNo;
+    request.queryModel = queryModel ? queryModel : {};
     request.responseType = '';
 
     var queryParam = CommonService.toQueryString(request);
@@ -60,6 +60,8 @@ const getAllKeywordsAction = () => async (dispatch, getState) => {
 const getKeywordsTreeAction = () => async (dispatch, getState) => {
     var queryModel = new JobKeywordRequestModel();
     var request = new RequestModel();
+    request.pageNo = 0;
+    request.pageSize = 0;
     request.queryModel = {};
     request.responseType = '';
 
@@ -86,7 +88,7 @@ const getKeywordsTreeAction = () => async (dispatch, getState) => {
     });
 }
 
-const getKeywordDetailsAction = async (id) => {
+const getKeywordDetailsAction = (id) => async (dispatch, getState) =>  {
     var queryModel = new JobKeywordRequestModel();
     var request = new RequestModel();
     request.queryModel = { _id: id };
@@ -94,9 +96,12 @@ const getKeywordDetailsAction = async (id) => {
 
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
-
     var result = response.data.length > 0 ? response.data[0] : new JobKeywordModel()
-    return result;
+
+    dispatch({
+        type: GET_KEYWORD_DETAILS,
+        payload: response
+    });
 }
 
 const addKeywordAction = (model) => async (dispatch, getState) => {
