@@ -5,6 +5,7 @@ import RequestModel from "@/src/models/request-model";
 import { GET_ALL_JOBS, GET_JOB_DETAILS, JOB_COMMAND_RESPONSE } from "@/src/constants/job-constants";
 import ResponseModel from "@/src/models/response-model";
 import { JOB_LIST } from "@/src/constants/response-type-constants";
+import { LOADER_VISIBLE } from "../constants/common-constants";
 
 const ApiName = 'jobs';
 
@@ -13,10 +14,11 @@ const getAllJobsAction = (pageNo = 1, queryModel = null) => async (dispatch, get
     request.pageNo = pageNo;
     request.queryModel = queryModel ? queryModel : {};
     request.responseType = JOB_LIST;
+    dispatch({ type: LOADER_VISIBLE, payload: true });
     
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
-    
+    dispatch({ type: LOADER_VISIBLE, payload: false });
     dispatch({
         type: GET_ALL_JOBS,
         payload: response

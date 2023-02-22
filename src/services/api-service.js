@@ -89,7 +89,8 @@ class ApiService {
                     method: 'GET'
                 }
             )
-            return await res.json()
+            const response = await res.json();
+            return response;
         } catch (error) {
             console.log(`error: ${error}`)
         }

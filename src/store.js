@@ -5,6 +5,7 @@ import { reducer as forms } from 'redux-form';
 import { getAllKeywordsReducer, getParentKeywordsReducer, keywordCommandResponseReducer, getKeywordDetailReducer } from "@/src/reducers/keyword-reducers";
 import { getAllJobsReducer, getJobDetailReducer, jobCommandResponseReducer } from "@/src/reducers/job-reducers";
 import { jobImageCommandResponseReducer } from '@/src/reducers/job-image-reducers'
+import { loaderVisiblReducer } from "@/src/reducers/loader-reducers";
 
 const reducers = combineReducers({
   getParentKeywords: getParentKeywordsReducer,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   jobCommandResponse: jobCommandResponseReducer,
   jobImageCommandResponse: jobImageCommandResponseReducer,
   getJobDetail: getJobDetailReducer,
+  loaderVisible: loaderVisiblReducer,
   form: forms
 });
 
