@@ -10,12 +10,17 @@ const addJobImageAction = (model) => async (dispatch, getState) => {
 }
 
 const updateJobImageAction = (model) => async (dispatch, getState) => {
+    debugger
     var response = await ApiService.get(`job-images/remove-file?file=${model.existingFile}`);
     var finalResponse = await uploadFile(model);
     dispatch({
         type: JOB_IMAGE_COMMAND_RESPONSE,
         payload: finalResponse
     });
+}
+
+const removeJobImageAction = (fileName) => async (dispatch, getState) => {
+    var response = await ApiService.get(`job-images/remove-file?file=${fileName}`);
 }
 
 const uploadFile = async (model) => {
@@ -42,5 +47,6 @@ const uploadFile = async (model) => {
 
 export {
     addJobImageAction,
-    updateJobImageAction
+    updateJobImageAction,
+    removeJobImageAction
 }

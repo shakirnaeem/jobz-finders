@@ -9,6 +9,7 @@ import JobDeletePopup from "./job-delete-popup";
 import { ToastContainer, toast } from 'react-toastify'
 import { clearJobResponseAction } from "@/src/actions/job-actions";
 import Paging from "@/src/components/paging";
+import { removeJobImageAction } from "@/src/actions/job-image-actions";
 
 const JobList = () => {
     const adSourceList = ['', 'Jang', 'The News', 'Dawn', 'Nawa-i-Waqt', 'Express', 'The Nation'];
@@ -26,6 +27,9 @@ const JobList = () => {
 
     const handleOk = () => {
         setModal(false)
+        if (selectedJob.fileName != null && selectedJob.fileName != '') {
+            dispatch(removeJobImageAction(selectedJob.fileName));
+        }
         dispatch(deleteJobAction(selectedJob))
     }
     useEffect(() => {

@@ -5,7 +5,12 @@ const { API_URI } = process.env
 export default function Home(props) {
     var router = useRouter();
     const { id } = router.query;
+    debugger
     return (
-        <JobForm id={id}></JobForm>
+        <>
+            {
+                id && <JobForm id={id}></JobForm>
+            }
+        </>
     )
 }

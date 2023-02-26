@@ -50,6 +50,7 @@ const JobForm = (props) => {
 
     useEffect(() => {
         if (firstUpdate.current) {
+            debugger
             setJobDetails(new JobModel())
             dispatch(clearJobResponseAction());
             dispatch(getJobDetailsAction(props.id));
@@ -72,12 +73,6 @@ const JobForm = (props) => {
             var fileName = event.target.files[0].name;
             setImageFile(event.target.files[0]);
             setExternsion(fileName.split('.')[1]);
-            // const reader = new FileReader();
-            // reader.onload = () => {
-            //     setImageFile(reader.result);
-            // };
-
-            // reader.readAsDataURL(event.target.files[0]);
         }
     };
 
@@ -103,7 +98,7 @@ const JobForm = (props) => {
         else {
             jobDetails._id = props.id;
             if (jobImageModel.imageFile != null && jobImageModel.imageFile != '') {
-                jobImageModel.fileName = `${props.id}.${extension}`;
+                //jobImageModel.fileName = `${props.id}.${extension}`;
                 const existingFileName = jobDetails.fileName;
                 jobDetails.fileName = jobImageModel.fileName;
                 dispatch(updateJobImageAction({ ...jobImageModel, existingFile: existingFileName }));

@@ -29,10 +29,10 @@ const getJobDetailsAction = (id) => async (dispatch, getState) => {
     var request = new RequestModel();
     request.queryModel = { _id: id };
     request.responseType = '';
-
+    dispatch({ type: LOADER_VISIBLE, payload: true });
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
-    
+    dispatch({ type: LOADER_VISIBLE, payload: false });
     var result = response.data.length > 0 ? response.data[0] : new JobModel()
     dispatch({
         type: GET_JOB_DETAILS,
@@ -41,8 +41,9 @@ const getJobDetailsAction = (id) => async (dispatch, getState) => {
 }
 
 const addJobAction = (model) => async (dispatch, getState) => {
+    dispatch({ type: LOADER_VISIBLE, payload: true });
     var response = await ApiService.add(`${ApiName}`, model);
-
+    dispatch({ type: LOADER_VISIBLE, payload: false });
     dispatch({
         type: JOB_COMMAND_RESPONSE,
         payload: response
@@ -50,8 +51,9 @@ const addJobAction = (model) => async (dispatch, getState) => {
 }
 
 const updateJobAction = (model) => async (dispatch, getState) => {
+    dispatch({ type: LOADER_VISIBLE, payload: true });
     var response = await ApiService.update(`${ApiName}`, model);
-
+    dispatch({ type: LOADER_VISIBLE, payload: false });
     dispatch({
         type: JOB_COMMAND_RESPONSE,
         payload: response
@@ -59,8 +61,9 @@ const updateJobAction = (model) => async (dispatch, getState) => {
 }
 
 const deleteJobAction = (entity) => async (dispatch, getState) => {
+    dispatch({ type: LOADER_VISIBLE, payload: true });
     var response = await ApiService.delete(`${ApiName}`, entity);
-
+    dispatch({ type: LOADER_VISIBLE, payload: false });
     dispatch({
         type: JOB_COMMAND_RESPONSE,
         payload: response
