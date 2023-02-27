@@ -13,17 +13,16 @@ const KeywordForm = (props) => {
     const firstUpdate = useRef(true);
     const [keyword, setKeyword] = useState('');
     const [parent, setParent] = useState('');
-    const [keywordDetails, setKeywordDetails] = useState(new JobKeywordModel());
 
     const response = useSelector(state => state.keywordCommandResponse);
     const detailResponse = useSelector(state => state.getKeywordDetail);
+    let keywordDetails = new JobKeywordModel();
 
     useEffect(() => {
         if (detailResponse.data && Object.keys(detailResponse.data).length > 0) {
-            const keywordDtl = detailResponse.data; 
-            setKeywordDetails(keywordDtl);
-            setKeyword(keywordDtl.keyword || '');
-            setParent(keywordDtl.parent);
+            keywordDetails = detailResponse.data; 
+            setKeyword(keywordDetails.keyword || '');
+            setParent(keywordDetails.parent);
         }
     }, [detailResponse]);
 

@@ -6,6 +6,8 @@ export default function Home(props) {
     var router = useRouter();
     const { id } = router.query;
     return (
-        <KeywordForm id={id}></KeywordForm>
+        <>
+            {id && <KeywordForm id={id}></KeywordForm>}
+        </>
     )
 }

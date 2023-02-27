@@ -5,7 +5,6 @@ const { API_URI } = process.env
 export default function Home(props) {
     var router = useRouter();
     const { id } = router.query;
-    debugger
     return (
         <>
             {

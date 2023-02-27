@@ -34,23 +34,6 @@ const getAllKeywordsAction = (pageNo = 1, queryModel = null) => async (dispatch,
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
 
-    if (response.data && response.data.length) {
-        response.data.forEach(item => {
-            if (item.parent != '') {
-                var itemParent = response.data.filter(x => x._id == item.parent);
-                if (itemParent.length > 0) {
-                    item.parent = itemParent[0].keyword;
-                }
-                else {
-                    item.parent = 'None';
-                }
-            }
-            else {
-                item.parent = 'None';
-            }
-        });
-    }
-
     dispatch({
         type: GET_ALL_KEYWORDS,
         payload: response
@@ -58,29 +41,12 @@ const getAllKeywordsAction = (pageNo = 1, queryModel = null) => async (dispatch,
 }
 
 const getKeywordsTreeAction = () => async (dispatch, getState) => {
-    var queryModel = new JobKeywordRequestModel();
     var request = new RequestModel();
     request.pageNo = 0;
     request.pageSize = 0;
-    request.queryModel = {};
-    request.responseType = '';
 
     var queryParam = CommonService.toQueryString(request);
     var response = await ApiService.get(`${ApiName}?${queryParam}`);
-
-    var keywordList = []
-    if (response.data && response.data.length) {
-        var parentKeywords = response.data.filter(x => x.parent == '')
-        parentKeywords.forEach(item => {
-            keywordList.push({ _id: item._id, keyword: item.keyword, parent: item.parent, active: item.active })
-            var childKeywords = response.data.filter(x => x.parent == item._id)
-            childKeywords.forEach(child => {
-                keywordList.push({ _id: child._id, keyword: child.keyword, parent: item.keyword, active: child.active })
-            });
-        });
-    }
-
-    response.data = keywordList
 
     dispatch({
         type: GET_ALL_KEYWORDS,
@@ -100,7 +66,7 @@ const getKeywordDetailsAction = (id) => async (dispatch, getState) =>  {
 
     dispatch({
         type: GET_KEYWORD_DETAILS,
-        payload: response
+        payload: result
     });
 }
 

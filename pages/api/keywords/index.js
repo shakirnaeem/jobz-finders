@@ -26,6 +26,11 @@ const GetList = async (req, res) => {
             .collection('jobKeywords')
             .find(requestModel.queryModel).count();
 
+        const parentKeywords = await db
+            .collection('jobKeywords')
+            .find({ ...requestModel.queryModel, parent: '' })
+            .project(responseModel).toArray();
+
         const jobKeywords = await db
             .collection('jobKeywords')
             .find(requestModel.queryModel)
@@ -34,6 +39,19 @@ const GetList = async (req, res) => {
             .skip(parseInt(requestModel.pageSize) == 0 ? 0 : parseInt(requestModel.pageSize) * (parseInt(requestModel.pageNo) - 1))
             .limit(parseInt(requestModel.pageSize) == 0 ? count : parseInt(requestModel.pageSize))
             .toArray();
+
+        if (jobKeywords.length > 0 && parentKeywords.length > 0) {
+            jobKeywords.forEach(item => {
+                let parentName = 'None';
+                if (item.parent != '' && item.parent != null) {
+                    const parentNames = parentKeywords.filter(x => x._id == item.parent).map(x => x.keyword);
+                    if (parentNames.length > 0) {
+                        parentName = parentNames[0];
+                    }
+                }
+                item.parent = parentName;
+            });
+        }
 
         res.status(200).json({ success: true, message: '', data: jobKeywords, count: count });
     } catch (error) {

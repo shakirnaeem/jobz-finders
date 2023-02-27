@@ -24,6 +24,7 @@ const JobKeywordPopup = (props) => {
 
     useEffect(() => {
         if (keywordsData.data && keywordsData.data.length > 0) {
+            debugger
             setKeywords(keywordsData.data);
         }
     }, [keywordsData.data]);
@@ -76,9 +77,9 @@ const JobKeywordPopup = (props) => {
             <ul className="list-group">
                 {keywords && keywords.length > 0 && keywords.map((item, i) =>
                     <li key={i} className="list-group-item d-flex justify-content-between align-items-center">
-                        {item.parent == '' && <div><b>{item.keyword}</b></div>}
-                        {item.parent != '' && <div className="ml-4">{item.keyword}</div>}
-                        {item.parent != '' && <div className="col-2">
+                        {item.parent == 'None' && <div><b>{item.keyword}</b></div>}
+                        {item.parent != 'None' && <div className="ml-4">{item.keyword}</div>}
+                        {item.parent != 'None' && <div className="col-2">
                             <input type="checkbox" value={item._id} parent={item.parent} onChange={selectKeyword} className="form-control" />
                         </div>}
                     </li>
