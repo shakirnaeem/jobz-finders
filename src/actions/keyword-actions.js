@@ -6,6 +6,7 @@ import RequestModel from "@/src/models/request-model";
 import { ADD_KEYWORD, GET_ALL_KEYWORDS, GET_KEYWORDS_TREE, GET_KEYWORD_DETAILS, GET_PARENT_KEYWORDS, KEYWORD_COMMAND_RESPONSE } from "@/src/constants/keyword-constants";
 import { PARENT_KEYWORDS } from "@/src/constants/response-type-constants";
 import ResponseModel from "@/src/models/response-model";
+import { addCommandAction, commandAction, deleteCommandAction, queryAction, updateCommandAction } from "./api-actions";
 
 const ApiName = 'keywords';
 
@@ -17,7 +18,7 @@ const getParentKeywordsAction = () => async (dispatch, getState) => {
     request.responseType = PARENT_KEYWORDS;
 
     var queryParam = CommonService.toQueryString(request);
-    var response = await ApiService.get(`${ApiName}?${queryParam}`);
+    var response = await queryAction(dispatch, `${ApiName}?${queryParam}`);
 
     dispatch({
         type: GET_PARENT_KEYWORDS,
@@ -32,7 +33,7 @@ const getAllKeywordsAction = (pageNo = 1, queryModel = null) => async (dispatch,
     request.responseType = '';
 
     var queryParam = CommonService.toQueryString(request);
-    var response = await ApiService.get(`${ApiName}?${queryParam}`);
+    var response = await queryAction(dispatch, `${ApiName}?${queryParam}`);
 
     dispatch({
         type: GET_ALL_KEYWORDS,
@@ -46,7 +47,7 @@ const getKeywordsTreeAction = () => async (dispatch, getState) => {
     request.pageSize = 0;
 
     var queryParam = CommonService.toQueryString(request);
-    var response = await ApiService.get(`${ApiName}?${queryParam}`);
+    var response = await queryAction(dispatch, `${ApiName}?${queryParam}`);
 
     dispatch({
         type: GET_ALL_KEYWORDS,
@@ -61,7 +62,7 @@ const getKeywordDetailsAction = (id) => async (dispatch, getState) =>  {
     request.responseType = '';
 
     var queryParam = CommonService.toQueryString(request);
-    var response = await ApiService.get(`${ApiName}?${queryParam}`);
+    var response = await queryAction(dispatch, `${ApiName}?${queryParam}`);
     var result = response.data.length > 0 ? response.data[0] : new JobKeywordModel()
 
     dispatch({
@@ -71,7 +72,7 @@ const getKeywordDetailsAction = (id) => async (dispatch, getState) =>  {
 }
 
 const addKeywordAction = (model) => async (dispatch, getState) => {
-    var response = await ApiService.add(`${ApiName}`, model);
+    var response = await addCommandAction(dispatch, ApiName, model);
 
     dispatch({
         type: KEYWORD_COMMAND_RESPONSE,
@@ -80,7 +81,7 @@ const addKeywordAction = (model) => async (dispatch, getState) => {
 }
 
 const updateKeywordAction = (model) => async (dispatch, getState) => {
-    var response = await ApiService.update(`${ApiName}`, model);
+    var response = await updateCommandAction(dispatch, ApiName, model);
 
     dispatch({
         type: KEYWORD_COMMAND_RESPONSE,
@@ -89,7 +90,7 @@ const updateKeywordAction = (model) => async (dispatch, getState) => {
 }
 
 const deleteKeywordAction = (entity) => async (dispatch, getState) => {
-    var response = await ApiService.delete(`${ApiName}/${entity._id}`);
+    var response = await deleteCommandAction(dispatch, `${ApiName}/${entity._id}`);
 
     if (response && response.success) {
         dispatch(getAllKeywordsAction());
