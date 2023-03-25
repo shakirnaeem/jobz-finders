@@ -35,9 +35,9 @@ const GetList = async (req, res) => {
             .collection('jobKeywords')
             .find(requestModel.queryModel)
             .project(responseModel)
-            .sort({ adDate: -1 })
-            .skip(parseInt(requestModel.pageSize) == 0 ? 0 : parseInt(requestModel.pageSize) * (parseInt(requestModel.pageNo) - 1))
-            .limit(parseInt(requestModel.pageSize) == 0 ? count : parseInt(requestModel.pageSize))
+            .sort({ adDate: 1 })
+            .skip(parseInt(requestModel.pageNo) == 0 ? 0 : parseInt(requestModel.pageSize) * (parseInt(requestModel.pageNo) - 1))
+            .limit(parseInt(requestModel.pageNo) == 0 ? count : parseInt(requestModel.pageSize))
             .toArray();
 
         if (jobKeywords.length > 0 && parentKeywords.length > 0) {
@@ -96,8 +96,9 @@ const Update = async (req, res) => {
 const Delete = async (req, res) => {
     var successResponse = false;
     try {
+        var requestModel = CommonService.queryStringToJSON(req.url);
         const { db } = await connectToDatabase();
-        await db.collection("jobKeywords").deleteOne(req.body);
+        await db.collection("jobKeywords").deleteOne(requestModel);
         successResponse = true;
     } catch (error) {
         console.log('error' + error)

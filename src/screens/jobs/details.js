@@ -2,34 +2,31 @@ import Image from 'next/image'
 import Layout from '@/src/screens/shared/layout/Layout'
 import CommonService from '@/src/services/common-service'
 import { useEffect, useState } from 'react';
-import { getJobDetailsAction } from '@/src/actions/job-actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import JobModel from '@/src/models/job-model';
+import OperationService from "@/src/services/operation-service";
 
 export default function JobDetails(props) {
-    const fileBasePath = 'https://storage.googleapis.com/car-renting-storage-bucket/';
+    const fileBasePath = 'https://service.jobzfinders.com/assets/';
     const dispatch = useDispatch();
+    const service = new OperationService(dispatch, 'jobs');
+    const [jobDetails, setJobDetails] = useState(new JobModel());
     const [totalPositions, setTotalPositions] = useState(0)
     const [positionData, setPositionData] = useState([])
     const adSourceList = ['', 'Jang', 'The News', 'Dawn', 'Nawa-i-Waqt', 'Express', 'The Nation'];
 
-    const jobDetailsData = useSelector(state => state.getJobDetail);
-    const jobDetails = jobDetailsData.data;
-
     useEffect(() => {
-        dispatch(getJobDetailsAction(props.id))
-        if (jobDetails._id && jobDetails._id != '') {
-            getPositionCount(jobDetails.positions)
-            formatPositions(jobDetails.positions)
+        const fetchData = async () => {
+            let response = await service.getDetail(props.id);
+            if (response.data && response.data.length > 0) {
+                response.data[0].adDate = new Date(response.data[0].adDate);
+                setJobDetails({ ...response.data[0] });
+                getPositionCount(jobDetails.positions);
+                formatPositions(jobDetails.positions);
+            }
         }
-    }, [props])
-
-    useEffect(() => {
-        if (jobDetails._id && jobDetails._id != '') {
-            getPositionCount(jobDetails.positions)
-            formatPositions(jobDetails.positions)
-        }
-    }, [jobDetails.positions])
+        fetchData();
+    }, []);
 
     const getPositionCount = (positions) => {
         console.log('position count handler', jobDetails._id)

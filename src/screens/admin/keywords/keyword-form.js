@@ -1,53 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import AdminLayout from "@/src/screens/shared/layout/admin-layout";
-import { addKeywordAction, getParentKeywordsAction, clearKeywordResponseAction, getKeywordDetailsAction, updateKeywordAction } from "../../../actions/keyword-actions";
-import KeywordDropdown from "@/src/components/keywords/keyword-dropdown.component";
 import { useRouter } from "next/router";
 import JobKeywordModel from "@/src/models/job-keyword-model";
+import OperationService from "@/src/services/operation-service";
+import { PARENT_KEYWORDS } from "@/src/constants/response-type-constants";
+import CommonService from "@/src/services/common-service";
 import ObjectID from "bson-objectid";
+import { ToastContainer, toast } from 'react-toastify'
 
 const KeywordForm = (props) => {
     var router = useRouter();
     const dispatch = useDispatch();
-    const firstUpdate = useRef(true);
-    const [keyword, setKeyword] = useState('');
-    const [parent, setParent] = useState('');
-
-    const response = useSelector(state => state.keywordCommandResponse);
-    const detailResponse = useSelector(state => state.getKeywordDetail);
-    let keywordDetails = new JobKeywordModel();
+    const service = new OperationService(dispatch, 'keywords');
+    const [keywordDetails, setKeywordDetails] = useState(new JobKeywordModel());
+    const [parentKeywords, setParentKeywords] = useState([]);
 
     useEffect(() => {
-        if (detailResponse.data && Object.keys(detailResponse.data).length > 0) {
-            keywordDetails = detailResponse.data; 
-            setKeyword(keywordDetails.keyword || '');
-            setParent(keywordDetails.parent);
+        const fetchData = async () => {
+            let response = await service.getDetail(props.id);
+            let parentResponse = await service.getList({ parent: '' }, PARENT_KEYWORDS);
+            if (response.data && response.data.length > 0) {
+                setKeywordDetails({ ...response.data[0] });
+            }
+            if (parentResponse.data && parentResponse.data.length > 0) {
+                setParentKeywords([...parentResponse.data ]);
+            }
         }
-    }, [detailResponse]);
-
-    useEffect(() => {
-        if (firstUpdate.current) {
-            dispatch(clearKeywordResponseAction());
-            dispatch(getParentKeywordsAction());
-            firstUpdate.current = false;
-        }
-        if (props.id) {
-            dispatch(getKeywordDetailsAction(props.id));
-        }
-    }, [props])
+        fetchData();
+    }, []);
 
     const saveData = async event => {
-        event.preventDefault()
-        keywordDetails.keyword = keyword;
-        keywordDetails.parent = parent;
+        event.preventDefault();
+
         if (!props.id) {
-            keywordDetails._id = new ObjectID()
-            dispatch(addKeywordAction(keywordDetails));
+            let response = await service.add({ ...keywordDetails, _id: new ObjectID() });
+            handleResponse(response);
         }
         else {
-            keywordDetails._id = props.id
-            dispatch(updateKeywordAction(keywordDetails));
+            let response = await service.update(keywordDetails);
+            handleResponse(response);
+        }
+    }
+
+    const handleResponse = (response) => {
+        if (response.message != '') {
+            if (response.success) {
+                router.push('/private/control-panel/keywords')
+            }
+            else if (!response.success)
+                toast.error(response.message)
         }
     }
 
@@ -60,30 +62,16 @@ const KeywordForm = (props) => {
                         <form onSubmit={saveData}>
                             <div className="card">
                                 <div className="card-body">
-                                    {response.success && response.message != '' &&
-                                        <div className="alert alert-success">
-                                            {response.message}
-                                            <button type="button" className="close" onClick={x => dispatch(clearKeywordResponseAction(false, ''))}>
-                                                <span>&times;</span>
-                                            </button>
-                                        </div>
-                                    }
-
-                                    {!response.success && response.message != '' &&
-                                        <div className="alert alert-danger">
-                                            {response.message}
-                                            <button type="button" className="close" onClick={x => dispatch(clearKeywordResponseAction(false, ''))}>
-                                                <span>&times;</span>
-                                            </button>
-                                        </div>
-                                    }
                                     <div className="form-group">
                                         <label className="mr-2">Select Parent: </label>
-                                        <KeywordDropdown handleChange={e => setParent(e.target.value)} id={parent}></KeywordDropdown>
+                                        <select className="form-control" name="parent" onChange={e => setKeywordDetails(CommonService.handleInputChange(e, keywordDetails))} value={keywordDetails.parent}>
+                                            <option value="">Select parent</option>
+                                            {parentKeywords.length > 0 && parentKeywords.map((item, i) => <option key={i} value={item._id}>{item.keyword}</option>)}
+                                        </select>
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Keyword:</label>
-                                        <input type="text" className="form-control" onChange={e => setKeyword(e.target.value)} value={keyword} name="keyword" />
+                                        <input type="text" className="form-control" onChange={e => setKeywordDetails(CommonService.handleInputChange(e, keywordDetails))} value={keywordDetails.keyword} name="keyword" />
                                     </div>
                                 </div>
                                 <div className="card-footer">

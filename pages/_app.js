@@ -1,6 +1,9 @@
 import '@/styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles.css'
+import '@/public/css/nice-select.css'
+import '@/public/css/slick.css'
+import '@/public/css/style.css'
 import 'react-toastify/dist/ReactToastify.css'
 import "react-datepicker/dist/react-datepicker.css";
 import { Provider } from 'react-redux';

@@ -1,126 +1,93 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import AdminLayout from "@/src/screens/shared/layout/admin-layout";
-import { addJobAction, clearJobResponseAction, getJobDetailsAction, updateJobAction } from "@/src/actions/job-actions";
-import { addJobImageAction, updateJobImageAction } from "@/src/actions/job-image-actions";
 import { useRouter } from "next/router";
 import JobModel from "@/src/models/job-model";
 import ObjectID from "bson-objectid";
 import DatePicker from "react-datepicker";
 import JobKeywordPopup from "@/src/components/jobs/job-keywords-popup.component";
-import { CommandAction } from "@/src/enums/response-status-enum";
 import { ToastContainer, toast } from 'react-toastify'
+import FileService from "@/src/services/file-service";
+import CommonService from "@/src/services/common-service";
+import OperationService from "@/src/services/operation-service";
 
 const JobForm = (props) => {
     var router = useRouter();
     const dispatch = useDispatch();
-
+    const service = new OperationService(dispatch, 'jobs');
     const [modal, setModal] = useState(false);
-
-    const firstUpdate = useRef(true);
     const [jobDetails, setJobDetails] = useState(new JobModel());
+    const [existingFileName, setExistingFileName] = useState(null);
 
-    const [imageFile, setImageFile] = useState(null);
-    const [extension, setExternsion] = useState('');
-    const [changeFile, setChangeFile] = useState(false);
-    const [imageExists, setImageExists] = useState(false);
-    const [adDate, setAdDate] = useState(new Date());
-
-    const commandResponse = useSelector(state => state.jobCommandResponse);
-    const jobImageCommandResponse = useSelector(state => state.jobImageCommandResponse);
-    const jobDetailResponse = useSelector(state => state.getJobDetail);
-
-    if (commandResponse.message != '') {
-        if (commandResponse.success && jobImageCommandResponse.success) {
-            router.push('/private/control-panel/jobs')
-        }
-        else if (!commandResponse.success)
-            toast.error(commandResponse.message)
-    }
+    let imageFile = null;
 
     useEffect(() => {
-        if (jobDetailResponse.data._id) {
-            const result = jobDetailResponse.data;
-            const dateResponse = result.adDate ? new Date(result.adDate) : new Date()
-            setImageExists(result.fileName && result.fileName != '');
-            setJobDetails(JSON.parse(JSON.stringify(result)))
-            setAdDate(dateResponse)
+        const fetchData = async () => {
+            let response = await service.getDetail(props.id);
+            if (response.data && response.data.length > 0) {
+                response.data[0].adDate = new Date(response.data[0].adDate);
+                setExistingFileName(response.data[0].fileName);
+                setJobDetails({ ...response.data[0] });
+            }
         }
-    }, [jobDetailResponse])
-
-    useEffect(() => {
-        if (firstUpdate.current) {
-            debugger
-            setJobDetails(new JobModel())
-            dispatch(clearJobResponseAction());
-            dispatch(getJobDetailsAction(props.id));
-            firstUpdate.current = false;
-        }
-    }, [props])
-
-    const handleCancel = () => {
-        setModal(false)
-    }
+        fetchData();
+    }, []);
 
     const handleOk = (selectedKeywords) => {
         jobDetails.keywords = selectedKeywords;
-        setJobDetails({ ...jobDetails })
         setModal(false)
     }
 
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             var fileName = event.target.files[0].name;
-            setImageFile(event.target.files[0]);
-            setExternsion(fileName.split('.')[1]);
+            jobDetails.fileName = `${jobDetails._id}.${fileName.split('.')[1]}`;
+            const reader = new FileReader();
+            reader.onload = () => {
+                imageFile = reader.result;
+            };
+
+            reader.readAsDataURL(event.target.files[0]);
         }
     };
 
     const saveData = async event => {
         event.preventDefault()
-        const id = new ObjectID()
-
-        jobDetails.adDate = new Date(adDate);
         var jobImageModel = {
-            fileName: `${id}.${extension}`,
-            imageFile: imageFile
+            fileName: `${jobDetails.fileName}`,
+            file: imageFile
         };
 
         if (!props.id) {
-            jobDetails.fileName = '';
-            jobDetails._id = id;
-            if (jobImageModel.imageFile) {
-                jobDetails.fileName = jobImageModel.fileName;
-                dispatch(addJobImageAction(jobImageModel));
+            if (jobImageModel.file) {
+                FileService.uploadFile(jobImageModel);
             }
-            dispatch(addJobAction(jobDetails));
+            let response = await service.add({ ...jobDetails, _id: new ObjectID() });
+            handleResponse(response);
         }
         else {
-            jobDetails._id = props.id;
-            if (jobImageModel.imageFile != null && jobImageModel.imageFile != '') {
-                //jobImageModel.fileName = `${props.id}.${extension}`;
-                const existingFileName = jobDetails.fileName;
+            if (jobImageModel.file != null && jobImageModel.file != '') {
                 jobDetails.fileName = jobImageModel.fileName;
-                dispatch(updateJobImageAction({ ...jobImageModel, existingFile: existingFileName }));
+                FileService.updateFile({ ...jobImageModel, existingFileName: existingFileName });
             }
-            dispatch(updateJobAction(jobDetails));
+            let response = await service.update(jobDetails);
+            handleResponse(response);
         }
     }
 
-    const handleInputChange = async (e) => {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        const name = e.target.name;
-        jobDetails[name] = value;
-        setJobDetails({ ...jobDetails })
-    }
-
-    const handleDatePickerChange = async (value) => {
-        setAdDate(value)
+    const handleResponse = (response) => {
+        if (response.message != '') {
+            if (response.success) {
+                router.push('/private/control-panel/jobs')
+            }
+            else if (!response.success)
+                toast.error(response.message)
+        }
     }
 
     return (
         <AdminLayout>
-            <JobKeywordPopup isOpen={modal} handleCancel={handleCancel} handleOk={handleOk}></JobKeywordPopup>
+            <JobKeywordPopup isOpen={modal} handleCancel={() => setModal(false)} handleOk={handleOk}></JobKeywordPopup>
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <ToastContainer position="top-right" />
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">Job Form</h4>
@@ -131,11 +98,11 @@ const JobForm = (props) => {
                                 <div className="card-body">
                                     <div className="form-group">
                                         <label className="mr-2">Date:</label>
-                                        <DatePicker className="form-control" selected={adDate} onChange={handleDatePickerChange} />
+                                        <DatePicker className="form-control" selected={jobDetails.adDate} onChange={value => setJobDetails(CommonService.handleDatePickerChange('adDate', value, jobDetails))} />
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Source:</label>
-                                        <select name="adSource" onChange={handleInputChange} value={jobDetails.adSource} className="form-control">
+                                        <select name="adSource" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.adSource} className="form-control">
                                             <option value="">-- Select --</option>
                                             <option value="1">Jang</option>
                                             <option value="2">The News</option>
@@ -147,7 +114,7 @@ const JobForm = (props) => {
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Type:</label>
-                                        <select name="adType" onChange={handleInputChange} value={jobDetails.adType} className="form-control">
+                                        <select name="adType" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.adType} className="form-control">
                                             <option value="">-- Select --</option>
                                             <option value="1">Job</option>
                                             <option value="2">Admission</option>
@@ -156,15 +123,15 @@ const JobForm = (props) => {
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Title:</label>
-                                        <input type="text" className="form-control" onChange={handleInputChange} value={jobDetails.title} name="title" placeholder="Please enter title" />
+                                        <input type="text" className="form-control" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.title} name="title" placeholder="Please enter title" />
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Positions:</label>
-                                        <textarea className="form-control" onChange={handleInputChange} value={jobDetails.positions} name="positions"></textarea>
+                                        <textarea className="form-control" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.positions} name="positions"></textarea>
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Locations:</label>
-                                        <textarea className="form-control" onChange={handleInputChange} value={jobDetails.locations} name="locations"></textarea>
+                                        <textarea className="form-control" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.locations} name="locations"></textarea>
                                     </div>
                                     <div className="form-group">
                                         <div className="d-flex justify-content-between align-items-center">
@@ -172,28 +139,22 @@ const JobForm = (props) => {
                                             <div><button type="button" className="btn btn-sm btn-primary m-1" onClick={() => setModal(true)}>Keywords Bank</button></div>
                                         </div>
 
-                                        <textarea className="form-control" onChange={handleInputChange} value={jobDetails.keywords} name="keywords"></textarea>
+                                        <textarea className="form-control" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.keywords} name="keywords"></textarea>
                                     </div>
                                     <div className="form-group">
                                         <label className="mr-2">Detail:</label>
-                                        <textarea className="form-control" onChange={handleInputChange} value={jobDetails.adDetail} name="adDetail"></textarea>
+                                        <textarea className="form-control" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} value={jobDetails.adDetail} name="adDetail"></textarea>
                                     </div>
-                                    {imageExists && !changeFile &&
-                                        <div className="form-group">
-                                            <label className="mr-2">File: </label>
-                                            <label>File attached</label>
-                                            <button type="button" onClick={() => setChangeFile(true)} className="btn btn-primary ml-5">Change file</button>
-                                        </div>
-                                    }
-                                    {(!imageExists || changeFile) &&
-                                        <div className="form-group">
-                                            <label className="mr-2">File: </label>
-                                            <input type="file" onChange={uploadToClient} className="form-control" />
-                                        </div>
-                                    }
+                                    <div className="form-group">
+                                        <label className="mr-2">File: </label>
+                                        <button type="button" className="btn btn-primary ml-5" onClick={x => document.getElementById('job-image').click() }>
+                                            {jobDetails.fileName ? 'Change File' : 'Upload File'}
+                                        </button>
+                                        <input type="file" id="job-image" style={{ display: 'none' }} onChange={uploadToClient} className="form-control" />
+                                    </div>
                                     <div className="form-group">
                                         <label className="mr-2">Active: </label>
-                                        <input type="checkbox" name="active" onChange={handleInputChange} checked={jobDetails.active} className="ml-3" />
+                                        <input type="checkbox" name="active" onChange={e => setJobDetails(CommonService.handleInputChange(e, jobDetails))} checked={jobDetails.active} className="ml-3" />
                                     </div>
                                 </div>
                                 <div className="card-footer">

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { getAllKeywordsAction, getKeywordsTreeAction } from "@/src/actions/keyword-actions";
 import CommonService from "@/src/services/common-service";
+import OperationService from "@/src/services/operation-service";
 
 const JobKeywordPopup = (props) => {
     const {
@@ -14,20 +14,18 @@ const JobKeywordPopup = (props) => {
     const [keywords, setKeywords] = useState([]);
 
     const dispatch = useDispatch()
-    const keywordsData = useSelector(state => state.getAllKeywords)
-
+    const service = new OperationService(dispatch, 'keywords');
     let selectedKeywords = [];
 
     useEffect(() => {
-        dispatch(getKeywordsTreeAction())
-    }, []);
-
-    useEffect(() => {
-        if (keywordsData.data && keywordsData.data.length > 0) {
-            debugger
-            setKeywords(keywordsData.data);
+        const fetchData = async () => {
+            let response = await service.getList();
+            if (response.success && response.data.length > 0) {
+                setKeywords(response.data);
+            }
         }
-    }, [keywordsData.data]);
+        fetchData();
+    }, []);
 
     const handleSearch = (e) => {
         const searchKey = e.target.value;

@@ -1,6 +1,8 @@
+import ObjectID from "bson-objectid";
+
 export default class JobModel {
     constructor() {
-        this._id = '';
+        this._id = new ObjectID();
         this.adDate = new Date();
         this.adSource = '1';
         this.adType = 1;

@@ -4,46 +4,43 @@ import Layout from '@/src/screens/shared/layout/Layout'
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import Paging from '@/src/components/paging'
-import { getAllJobsAction } from "@/src/actions/job-actions";
+import OperationService from "@/src/services/operation-service";
+import PageModel from "@/src/models/page-model";
+import { JOB_LIST } from "@/src/constants/response-type-constants";
 
 export default function JobListing(props) {
     const router = useRouter()
     const dispatch = useDispatch();
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(20);
-    const [totalItems, setTotalItems] = useState(0);
+    const [data, setData] = useState([]);
+    const [page, setPage] = useState(new PageModel());
 
-    const response = useSelector(state => state.getAllJobs);
+    const service = new OperationService(dispatch, 'jobs');
+    useEffect(() => {
+        const fetchData = async () => {
+            const queryModel = props.searchParam ? { keywords: props.searchParam } : null;
+            let response = await service.getPagedList(queryModel, JOB_LIST, page.currentPage);
+            if (response.success && response.data.length > 0) {
+                setData(response.data);
+                setPage({ ...page, totalItems: response.count });
+                setTimeout(() => { 
+                    window.scrollTo(0,0) 
+                }, 500);
+            }
+        }
+        fetchData();
+    }, [page.currentPage]);
+
+    const handlePageClick = (pageNo) => {
+        setPage({ ...page, currentPage: pageNo })
+    }
 
     function gotoDetails(id) {
         router.push(`/details/${id}`)
     }
 
-    useEffect(() => {
-        if (props.searchParam)
-            dispatch(getAllJobsAction(1, { keywords: props.searchParam }));
-        else
-            dispatch(getAllJobsAction(1));
-    }, []);
-
-    useEffect(() => {
-        if (response.data instanceof Array) {
-            setTotalItems(response.count);
-        }
-    }, [response]);
-
-    const handlePageClick = (pageNo) => {
-        setCurrentPage(pageNo);
-        window.scrollTo(0, 0)
-        if (props.searchParam)
-            dispatch(getAllJobsAction(pageNo, { keywords: props.searchParam }));
-        else
-            dispatch(getAllJobsAction(pageNo));
-    }
-
     const renderJobs = () => {
-        if (response.data instanceof Array) {
-            return response.data.map(function (item, i) {
+        if (data instanceof Array) {
+            return data.map(function (item, i) {
                 return <div key={i} className="col-md-12 mb-2">
                     <div className="border rounded p-3">
                         <h5>{item.title}</h5>
@@ -77,8 +74,8 @@ export default function JobListing(props) {
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">{props.title}</h4>
                 <div className="row m-0">
-                    {response.data.length > 0 && renderJobs()}
-                    {response.data.length == 0 &&
+                    {data.length > 0 && renderJobs()}
+                    {data.length == 0 &&
                         <div className="col-md-12 mb-2">
                             <div className="border rounded p-3">
                                 <h6 className="text-center">No jobs found.</h6>
@@ -88,7 +85,7 @@ export default function JobListing(props) {
                 </div>
                 <div className='row'>
                     <div className='col-md-12 d-flex justify-content-center'>
-                        {response.data.length > 0 && <Paging onPageClick={handlePageClick} itemsPerPage={itemsPerPage} currentPage={currentPage} totalItems={totalItems} />}
+                        {data.length > 0 && <Paging onPageClick={handlePageClick} itemsPerPage={page.itemsPerPage} currentPage={page.currentPage} totalItems={page.totalItems} />}
                     </div>
                 </div>
             </div>

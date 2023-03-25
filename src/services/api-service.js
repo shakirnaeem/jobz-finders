@@ -21,8 +21,9 @@ class ApiService {
         }
     }
 
-    static async sendCommandRequest(url, data, httpMethod) {
+    static async sendCommandRequest(url, data, httpMethod, baseUri) {
         try {
+            let basePath = baseUri ? baseUri : process.env.API_URI;
             var options = {
                 headers: this.getHeaders(),
                 method: httpMethod
@@ -30,22 +31,7 @@ class ApiService {
             if (httpMethod != 'DELETE') {
                 options['body'] = JSON.stringify(data)
             }
-            const api_url = `${process.env.API_URI}${url}`
-            const res = await fetch(api_url, options)
-            return await res.json()
-        } catch (error) {
-            console.log(`error: ${error}`)
-        }
-    }
-    
-    static async sendDeleteCommandRequest(url, httpMethod) {
-        try {
-            var options = {
-                headers: this.getHeaders(),
-                method: httpMethod
-            };
-            
-            const api_url = `${process.env.API_URI}${url}`
+            const api_url = `${basePath}${url}`
             const res = await fetch(api_url, options)
             return await res.json()
         } catch (error) {
@@ -53,36 +39,22 @@ class ApiService {
         }
     }
 
-    static async sendQueryRequest(url) {
+    static async add(url, data, baseUri) {
+        return await ApiService.sendCommandRequest(url, data, 'POST', baseUri);
+    }
+
+    static async update(url, data, baseUri) {
+        return await ApiService.sendCommandRequest(url, data, 'PUT', baseUri);
+    }
+
+    static async delete(url, data, baseUri) {
+        return await ApiService.sendCommandRequest(url, data, 'DELETE', baseUri);
+    }
+
+    static async get(url, baseUri) {
         try {
-            const api_url = `${process.env.API_URI}${url}`
-            const res = await fetch(api_url,
-                {
-                    headers: this.getHeaders(),
-                    method: 'GET'
-                }
-            )
-            return await res.json()
-        } catch (error) {
-            console.log(`error: ${error}`)
-        }
-    }
-
-    static async add(url, data) {
-        return await ApiService.sendCommandRequest(url, data, 'POST');
-    }
-
-    static async update(url, data) {
-        return await ApiService.sendCommandRequest(url, data, 'PUT');
-    }
-
-    static async delete(url, data) {
-        return await ApiService.sendCommandRequest(url, data, 'DELETE');
-    }
-
-    static async get(url) {
-        try {
-            const api_url = `${process.env.API_URI}${url}`
+            let basePath = baseUri ? baseUri : process.env.API_URI;
+            const api_url = `${basePath}${url}`
             const res = await fetch(api_url,
                 {
                     headers: this.getHeaders(),
