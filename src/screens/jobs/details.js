@@ -21,8 +21,8 @@ export default function JobDetails(props) {
             if (response.data && response.data.length > 0) {
                 response.data[0].adDate = new Date(response.data[0].adDate);
                 setJobDetails({ ...response.data[0] });
-                getPositionCount(jobDetails.positions);
-                formatPositions(jobDetails.positions);
+                getPositionCount(response.data[0].positions);
+                formatPositions(response.data[0].positions);
             }
         }
         fetchData();
@@ -110,11 +110,12 @@ export default function JobDetails(props) {
                                         }
                                     </div>
                                     <div className="col-md-6">
-                                        {jobDetails.fileName && <img src={`${fileBasePath}${jobDetails.fileName}`} width={692} height={1181} className="col-12" />}
+                                        {jobDetails.fileName && <img src={`${fileBasePath}${jobDetails.fileName}`} className="col-12" />}
                                     </div>
                                 </div>
                                 <div className='row'>
                                     <div className="col-md-12">
+                                        <h5 className="border-bottom pb-2 text-danger mt-5">Details</h5>
                                         <div dangerouslySetInnerHTML={{ __html: jobDetails.adDetail }}></div>
                                     </div>
                                     <div className="col-md-12">
