@@ -1,9 +1,9 @@
 import '@/styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../styles.css'
-import '@/public/css/nice-select.css'
-import '@/public/css/slick.css'
-import '@/public/css/style.css'
+// import '@/public/css/nice-select.css'
+// import '@/public/css/slick.css'
+// import '@/public/css/style.css'
 import 'react-toastify/dist/ReactToastify.css'
 import "react-datepicker/dist/react-datepicker.css";
 import { Provider } from 'react-redux';
@@ -42,6 +42,7 @@ function MyApp({ Component, pageProps }) {
       '/account/login',
       '/details/[id]',
       '/job_type/[key]',
+      '/job_search',
     ];
     if (navigationData && navigationData.navigations.length > 0) {
       const navLength = navigationData.navigations.length;
