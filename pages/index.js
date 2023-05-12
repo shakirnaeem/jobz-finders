@@ -1,4 +1,4 @@
-import JobListing from "@/src/screens/jobs/listing"
+import JobListing from "@/src/screens/jobs/listing";
 
 const { API_URI } = process.env
 

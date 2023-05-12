@@ -7,6 +7,7 @@ import Paging from '@/src/components/paging'
 import OperationService from "@/src/services/operation-service";
 import PageModel from "@/src/models/page-model";
 import { JOB_LIST } from "@/src/constants/response-type-constants";
+import Head from 'next/head';
 
 export default function JobListing(props) {
     const router = useRouter()
@@ -22,8 +23,8 @@ export default function JobListing(props) {
             if (response.success && response.data.length > 0) {
                 setData(response.data);
                 setPage({ ...page, totalItems: response.count });
-                setTimeout(() => { 
-                    window.scrollTo(0,0) 
+                setTimeout(() => {
+                    window.scrollTo(0, 0)
                 }, 500);
             }
         }
@@ -71,6 +72,9 @@ export default function JobListing(props) {
 
     return (
         <Layout>
+            <Head>
+                <title>Jobs Finders | {props.title}</title>
+            </Head>
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">{props.title}</h4>
                 <div className="row m-0">

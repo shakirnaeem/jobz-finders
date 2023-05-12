@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import JobModel from '@/src/models/job-model';
 import OperationService from "@/src/services/operation-service";
+import Head from 'next/head';
 
 export default function JobDetails(props) {
     const fileBasePath = 'https://service.jobzfinders.com/assets/';
@@ -68,6 +69,9 @@ export default function JobDetails(props) {
 
     return (
         <Layout>
+            <Head>
+                <title>Jobs Finders | Job details</title>
+            </Head>
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">{jobDetails.title}</h4>
                 <div className="row m-0">
