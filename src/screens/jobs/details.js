@@ -76,24 +76,24 @@ export default function JobDetails(props) {
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <h5 className="border-bottom pb-2 text-danger">Job Details</h5>
+                                        <h5 className="border-bottom pb-2 text-app2">Job Details</h5>
                                         <div className="d-flex border-bottom pt-2 pb-2 mb-2">
                                             <div className="mr-auto">Date</div>
-                                            <div className="badge badge-info p-2">{jobDetails.adDate && CommonService.toDateString(new Date(jobDetails.adDate))}</div>
+                                            <div className="badge badge-app p-2">{jobDetails.adDate && CommonService.toDateString(new Date(jobDetails.adDate))}</div>
                                         </div>
                                         <div className="d-flex border-bottom pt-2 pb-2 mb-2">
                                             <div className="mr-auto">Newspaper</div>
-                                            <div className="badge badge-info p-2">{adSourceList[jobDetails.adSource]}</div>
+                                            <div className="badge badge-app p-2">{adSourceList[jobDetails.adSource]}</div>
                                         </div>
                                         <div className="d-flex border-bottom pt-2 pb-2 mb-2">
                                             <div className="mr-auto">Location</div>
-                                            <div className="badge badge-info p-2">{jobDetails.locations}</div>
+                                            <div className="badge badge-app p-2">{jobDetails.locations}</div>
                                         </div>
                                         <div className="d-flex border-bottom pt-2 pb-2 mb-2">
                                             <div className="mr-auto">Total Posts</div>
-                                            <div className="badge badge-info p-2">{totalPositions}</div>
+                                            <div className="badge badge-app p-2">{totalPositions}</div>
                                         </div>
-                                        <h5 className="border-bottom pb-2 text-danger mt-5">Available Posts</h5>
+                                        <h5 className="border-bottom pb-2 text-app2 mt-5">Available Posts</h5>
                                         {
                                             positionData.map((x, i) =>
                                                 <>
@@ -103,7 +103,7 @@ export default function JobDetails(props) {
                                                     {x.type == 'data' &&
                                                         <div key={i} className="d-flex border-bottom pt-2 pb-2 mb-2">
                                                             <div className="mr-auto">{x.title}</div>
-                                                            <div className="badge badge-info p-2">{x.count}</div>
+                                                            <div className="badge badge-app p-2">{x.count}</div>
                                                         </div>}
                                                 </>
                                             )
@@ -115,7 +115,7 @@ export default function JobDetails(props) {
                                 </div>
                                 <div className='row'>
                                     <div className="col-md-12">
-                                        <h5 className="border-bottom pb-2 text-danger mt-5">Details</h5>
+                                        <h5 className="border-bottom pb-2 text-app2 mt-5">Details</h5>
                                         <div dangerouslySetInnerHTML={{ __html: jobDetails.adDetail }}></div>
                                     </div>
                                     <div className="col-md-12">

@@ -1,5 +1,5 @@
 :root {
-    --app-color-1 : #014B85;
+    --app-color-1: #014B85;
     --app-color-2: #FB246A;
 }
 
@@ -95,4 +95,27 @@ body {
 
 .navbar-nav .nav-link:hover {
     text-decoration: underline;
+}
+
+.btn-app {
+    background-color: var(--app-color-2);
+    color           : #eee;
+}
+
+.btn-app:hover {
+    background-color: var(--app-color-1);
+    color           : #eee;
+}
+
+.text-app {
+    color: var(--app-color-1);
+}
+
+.text-app2 {
+    color: var(--app-color-2);
+}
+
+.badge-app {
+    background-color: var(--app-color-1);
+    color: #eee;
 }

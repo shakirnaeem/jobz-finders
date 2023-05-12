@@ -45,8 +45,8 @@ export default function JobListing(props) {
                     <div className="border rounded p-3">
                         <h5>{item.title}</h5>
                         <div className="text-muted mb-4">{formatPositions(item.positions)}</div>
-                        <div className="d-flex justify-content-between text-success"><div>{item.locations}<br />{CommonService.toDateString(new Date(item.adDate))}</div>
-                            <div><button className="btn btn-danger" onClick={x => gotoDetails(item._id)}>View Details</button></div></div>
+                        <div className="d-flex justify-content-between text-app"><div>{item.locations}<br />{CommonService.toDateString(new Date(item.adDate))}</div>
+                            <div><button className="btn btn-app" onClick={x => gotoDetails(item._id)}>View Details</button></div></div>
                     </div>
                 </div>
             }, this)
