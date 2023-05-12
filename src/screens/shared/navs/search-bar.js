@@ -9,7 +9,7 @@ export default function SearchBar(props) {
         router.push('/job_search?search=' + searchKeyword.search);
     }
     function toggle() {
-        props.setToggleSideNav(!props.toggleSideNav)
+        props.setToggleSideNav(!props.toggleSideNav) 
     }
 
     return <div className="row d-flex justify-content-center search-bar fixed-top">
