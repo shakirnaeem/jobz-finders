@@ -13,7 +13,7 @@ export default function SearchBar(props) {
     }
 
     return <div className="row d-flex justify-content-center search-bar fixed-top">
-        <div className="col-6">
+        <div className="col-12 col-md-6">
             <form className="form-inline"><div className="input-group col-12">
                 <input type="text" name="search" className="form-control" id="search_id" onChange={e => setSearchKeyword(CommonService.handleInputChange(e, searchKeyword))} placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
                 <div className="input-group-prepend">

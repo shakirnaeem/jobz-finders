@@ -11,18 +11,18 @@ export default function TopNav(props) {
     function toggle() {
         props.setToggleSideNav(!props.toggleSideNav)
     }
-
+    let toggleSideNavClass = props.toggleSideNav ? 'navbar-nav' : 'navbar-nav d-none d-sm-none'
     return <>
         <nav className="navbar navbar-expand-lg navbar-light bg-white fixed-top">
             <Link className="navbar-brand" href={{ pathname: `/` }}>
                 <img src="/logo.png" style={{ width: 120 }} />
             </Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button onClick={toggle} className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
             <div className="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-                <ul className="navbar-nav">
+                <ul className="navbar-nav d-xs-none d-sm-none d-lg-flex">
                     <li className="nav-item active">
                         <Link className="nav-link" href={{ pathname: `/` }} >All Jobs</Link>
                     </li>

@@ -5,11 +5,13 @@ import path from 'path'
 import { NavigationMainModel } from '@/src/models/navigation-model';
 import { useEffect, useState } from 'react';
 import navigationData from '@/pages/navigation-data.json';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 export default function SideNav(props) {
 
-    let toggleSideNavClass = props.toggleSideNav ? '' : ' d-none d-sm-none'
-    return <div id="app-side-nav" className={`sidenav col-md-2 col-6 ml-1 d-lg-block d-md-block rounded${toggleSideNavClass}`}>
+    let toggleSideNavClass = props.toggleSideNav ? '' : ' d-none d-sm-none d-md-none'
+    return <div id="app-side-nav" className={`sidenav col-md-2 col-6 ml-1 d-lg-flex rounded${toggleSideNavClass}`}>
+        <FontAwesomeIcon icon={faClose} className="text-light d-lg-none d-md-none" onClick={() => props.setToggleSideNav(!props.toggleSideNav)} />
         <i className="closenav fa fa-close d-lg-none d-md-none"></i>
         {navigationData && navigationData.navigations.length > 0 &&
             navigationData.navigations.map(function (item, i) {
