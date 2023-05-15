@@ -75,7 +75,7 @@ export default function JobListing(props) {
         <Layout>
             <Head>
                 <title>Jobs Finders | {props.title}</title>
-                <AdSense.Google client="ca-pub-4945056751626611" slot="your-slot-id" />
+                {/* <AdSense.Google client="ca-pub-4945056751626611" slot="your-slot-id" /> */}
             </Head>
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">{props.title}</h4>
