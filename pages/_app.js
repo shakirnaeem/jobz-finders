@@ -11,6 +11,7 @@ import store from '@/src/store';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import navigationData from '@/pages/navigation-data.json';
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -68,6 +69,13 @@ function MyApp({ Component, pageProps }) {
   }
 
   return <Provider store={store}>
+    <Head>
+      <script
+        data-ad-client="ca-pub-4945056751626611"
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      ></script>
+    </Head>
     {authorized &&
       <Component {...pageProps} />
     }
