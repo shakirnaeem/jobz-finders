@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import JobModel from '@/src/models/job-model';
 import OperationService from "@/src/services/operation-service";
 import Head from 'next/head';
+import AdSense from '@/src/components/adsence';
 
 export default function JobDetails(props) {
     const fileBasePath = 'https://service.jobzfinders.com/assets/';
@@ -114,7 +115,12 @@ export default function JobDetails(props) {
                                         }
                                     </div>
                                     <div className="col-md-6">
-                                        {jobDetails.fileName && <img src={`${fileBasePath}${jobDetails.fileName}`} className="col-12" />}
+                                        {jobDetails.fileName &&
+                                            <>
+                                                <img src={`${fileBasePath}${jobDetails.fileName}`} className="col-12" />
+                                                <AdSense></AdSense>
+                                            </> 
+                                        }
                                     </div>
                                 </div>
                                 <div className='row'>

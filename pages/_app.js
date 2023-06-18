@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }) {
   return <Provider store={store}>
     <Head>
       <script
-        data-ad-client="ca-pub-4945056751626611"
+        data-ad-client="ca-pub-1432393119062321"
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       ></script>

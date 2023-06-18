@@ -117,5 +117,9 @@ body {
 
 .badge-app {
     background-color: var(--app-color-1);
-    color: #eee;
+    color           : #eee;
+}
+
+.adsbygoogle {
+    height: 200px !important;
 }

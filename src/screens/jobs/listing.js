@@ -8,7 +8,7 @@ import OperationService from "@/src/services/operation-service";
 import PageModel from "@/src/models/page-model";
 import { JOB_LIST } from "@/src/constants/response-type-constants";
 import Head from 'next/head';
-import AdSense from 'react-adsense';
+import AdSense from '@/src/components/adsence';
 
 export default function JobListing(props) {
     const router = useRouter()
@@ -43,14 +43,17 @@ export default function JobListing(props) {
     const renderJobs = () => {
         if (data instanceof Array) {
             return data.map(function (item, i) {
-                return <div key={i} className="col-md-12 mb-2">
-                    <div className="border rounded p-3">
-                        <h5>{item.title}</h5>
-                        <div className="text-muted mb-4">{formatPositions(item.positions)}</div>
-                        <div className="d-flex justify-content-between text-app"><div>{item.locations}<br />{CommonService.toDateString(new Date(item.adDate))}</div>
-                            <div><button className="btn btn-app" onClick={x => gotoDetails(item._id)}>View Details</button></div></div>
+                return <>
+                    <div key={i} className="col-md-12 mb-2">
+                        <div className="border rounded p-3">
+                            <h5>{item.title}</h5>
+                            <div className="text-muted mb-4">{formatPositions(item.positions)}</div>
+                            <div className="d-flex justify-content-between text-app"><div>{item.locations}<br />{CommonService.toDateString(new Date(item.adDate))}</div>
+                                <div><button className="btn btn-app" onClick={x => gotoDetails(item._id)}>View Details</button></div></div>
+                        </div>
                     </div>
-                </div>
+                    {i == 3 && <AdSense></AdSense>}
+                </>
             }, this)
         }
     }
@@ -77,6 +80,7 @@ export default function JobListing(props) {
                 <title>Jobs Finders | {props.title}</title>
                 {/* <AdSense.Google client="ca-pub-4945056751626611" slot="your-slot-id" /> */}
             </Head>
+            <AdSense></AdSense>
             <div className="col-md-10 col-sm-12 col-xs-12 float-right main">
                 <h4 className="ml-3 mr-3 border-bottom pb-2 mt-3">{props.title}</h4>
                 <div className="row m-0">
